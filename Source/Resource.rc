@@ -1,0 +1,13 @@
+#include "Resource.h"
+
+IDI_ICON                    ICON                    "resources/coffee.ico"
+IDI_SMALLICON               ICON                    "resources/small_coffee.ico"
+
+SOUND_START                 WAVDATA                 "Resources/goclick.wav"
+SOUND_STOP                  WAVDATA                 "Resources/stopclick.wav"
+SOUND_CLICK                 WAVDATA                 "Resources/timerclick.wav"
+SOUND_DRUGS                 WAVDATA                 "Resources/drugs.wav"
+SOUND_ALARM                 WAVDATA                 "Resources/alarm.wav"
+
+BITMAP_PARASITE             BITMAPDATA              "resources/Intestinal_parasites_.bmp"
+BITMAP_PARASITE_BW          BITMAPDATA              "resources/Intestinal_parasites_bw.bmp"
