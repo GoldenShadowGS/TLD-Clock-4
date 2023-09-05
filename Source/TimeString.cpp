@@ -272,9 +272,11 @@ void TimeStringSmall::Set(INT64 ms)
 	INT64 tenths = ms / 100;
 	INT64 Minutes = (ms / 1000) % 60;
 	INT64 Hours = (ms / 60000) % 24;
+	INT64 Days = ms / 1440000;
 
 	char digits[maxRawSize] =
 	{
+		(Days % 10) + 48,
 		((Hours / 10) % 10) + 48,
 		(Hours % 10) + 48,
 		((Minutes / 10) % 10) + 48,

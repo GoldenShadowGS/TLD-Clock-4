@@ -15,7 +15,9 @@ public:
 	BOOL Press(int x, int y, BOOL LMB) override;
 	BOOL HitTest(int x, int y) override;
 	INT64 GetLocaltime();
-private: 
+	inline void SetOffset(int offset) { m_Timeoffset = offset; }
+	inline int GetOffset() { return m_Timeoffset; }
+private:
 	void Drugs();
 	Image m_SunImage;
 	Image m_MoonImage;

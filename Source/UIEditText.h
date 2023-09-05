@@ -17,6 +17,7 @@ public:
 	BOOL HitTest(int x, int y) override;
 	float GetStringWidth();
 	INT64 GetTime();
+	void SetTime(INT64 time);
 private:
 	SevenSegment m_SevenSegment;
 	TimeStringSmall m_TimeString;

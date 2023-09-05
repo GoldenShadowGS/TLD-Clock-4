@@ -72,3 +72,8 @@ INT64 UIEditText::GetTime()
 {
 	return m_TimeString.GetTime();
 }
+
+void UIEditText::SetTime(INT64 time)
+{
+	m_TimeString.Set(time);
+}

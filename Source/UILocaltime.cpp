@@ -111,8 +111,8 @@ INT64 UIBLocaltime::GetLocaltime()
 
 void UIBLocaltime::Drugs()
 {
-	static int PrevDay = 0;
 	int CurrentDay = int(GetLocaltime() / 1440);
+	static int PrevDay = CurrentDay;
 	if (CurrentDay > PrevDay)
 	{
 		m_PlaySound();

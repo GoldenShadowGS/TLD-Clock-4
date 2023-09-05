@@ -11,7 +11,8 @@
 //
 //ToDO
 // Sun sync toggle, so you can drag sun to adjust time 
-// Implement Save Load
+
+// Test everything
 
 const WCHAR* gTitle = L"TLD Clock";
 const WCHAR* gWindowClass = L"MainWindowClass";
@@ -78,7 +79,7 @@ int Application::Run(HINSTANCE hInstance)
 
 	std::vector<UIElementBase*> vectorUIElements;
 
-	UIButton PlayButton(CreatePlayImage(factory, dc, 50), CreatePauseImage(factory, dc, 50), TRUE, MakeRect(300, 350, 100, 80), FALSE, [&] (BOOL LMB)
+	UIButton PlayButton(CreatePlayImage(factory, dc, 50), CreatePauseImage(factory, dc, 50), TRUE, MakeRect(300, 250, 100, 80), FALSE, [&] (BOOL LMB)
 		{
 			if (!timer.isStarted())
 			{
@@ -95,7 +96,7 @@ int Application::Run(HINSTANCE hInstance)
 		});
 	vectorUIElements.push_back(&PlayButton);
 
-	UIButton ParasitesToggle(LoadBitmapImage(dc, BITMAP_PARASITE), LoadBitmapImage(dc, BITMAP_PARASITE_BW), FALSE, MakeRect(300, 450, 64, 64), TRUE, [&] (BOOL LMB)
+	UIButton ParasitesToggle(LoadBitmapImage(dc, BITMAP_PARASITE), LoadBitmapImage(dc, BITMAP_PARASITE_BW), savestate.ParasitesToggle, MakeRect(300, 450, 64, 64), TRUE, [&] (BOOL LMB)
 		{
 			if (savestate.ParasitesToggle)
 				savestate.ParasitesToggle = FALSE;
@@ -110,6 +111,7 @@ int Application::Run(HINSTANCE hInstance)
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
 		});
+	MainClockText.SetTime(savestate.maintime);
 	vectorUIElements.push_back(&MainClockText);
 
 
@@ -118,6 +120,7 @@ int Application::Run(HINSTANCE hInstance)
 			if (savestate.ParasitesToggle)
 				soundManager.Play(SOUND_DRUGS, 1.0f, 1.0f, 0);
 		});
+	LocalTime.SetOffset(savestate.localtimeoffset);
 	vectorUIElements.push_back(&LocalTime);
 
 
@@ -125,6 +128,7 @@ int Application::Run(HINSTANCE hInstance)
 		{
 			soundManager.Play(SOUND_ALARM, 1.0f, 1.0f);
 		});
+	alarmDisplay.SetTime(savestate.alarmtime);
 	vectorUIElements.push_back(&alarmDisplay);
 
 	//1
@@ -133,6 +137,7 @@ int Application::Run(HINSTANCE hInstance)
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
 		});
+	AddText1.SetTime(savestate.addtime1);
 	vectorUIElements.push_back(&AddText1);
 
 	UIButton EditSubmit1(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 300, 80, 32), FALSE, [&] (BOOL LMB)
@@ -152,6 +157,7 @@ int Application::Run(HINSTANCE hInstance)
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
 		});
+	AddText2.SetTime(savestate.addtime2);
 	vectorUIElements.push_back(&AddText2);
 
 	UIButton EditSubmit2(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 350, 80, 32), FALSE, [&] (BOOL LMB)
@@ -171,6 +177,7 @@ int Application::Run(HINSTANCE hInstance)
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
 		});
+	AddText3.SetTime(savestate.addtime3);
 	vectorUIElements.push_back(&AddText3);
 
 	UIButton EditSubmit3(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 400, 80, 32), FALSE, [&] (BOOL LMB)
@@ -190,6 +197,7 @@ int Application::Run(HINSTANCE hInstance)
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
 		});
+	AddText4.SetTime(savestate.addtime4);
 	vectorUIElements.push_back(&AddText4);
 
 	UIButton EditSubmit4(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 450, 80, 32), FALSE, [&] (BOOL LMB)
@@ -209,6 +217,7 @@ int Application::Run(HINSTANCE hInstance)
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
 		});
+	AlarmEditBox.SetTime(savestate.alarmeditbox);
 	vectorUIElements.push_back(&AlarmEditBox);
 
 	UIButton AlarmSubmitBox(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 230, 80, 50), FALSE, [&] (BOOL LMB)
@@ -232,6 +241,16 @@ int Application::Run(HINSTANCE hInstance)
 		DispatchMessage(&msg);
 	}
 	savestate.maintime = timer.GetTime();
+	savestate.alarmtime = alarmDisplay.GetRemainingtime();
+	savestate.alarmeditbox = AlarmEditBox.GetTime();
+	savestate.addtime1 = AddText1.GetTime();
+	savestate.addtime2 = AddText2.GetTime();
+	savestate.addtime3 = AddText3.GetTime();
+	savestate.addtime4 = AddText4.GetTime();
+	savestate.localtimeoffset = LocalTime.GetOffset();
+
+
+
 	SaveFile(savestate);
 	return (int)msg.wParam;
 }

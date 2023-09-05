@@ -76,3 +76,9 @@ void UIText::AddTime(INT64 time)
 	m_pTimer->AddTime(time);
 	m_TimeString.Set(m_pTimer->GetTime());
 }
+
+void UIText::SetTime(INT64 time)
+{
+	m_pTimer->Reset(time);
+	m_TimeString.Set(m_pTimer->GetTime());
+}

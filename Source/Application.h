@@ -6,8 +6,15 @@
 
 struct SaveState
 {
-	BOOL ParasitesToggle = FALSE;
 	INT64 maintime = 0;
+	INT64 alarmtime = 0;
+	INT64 alarmeditbox = 0;
+	INT64 addtime1 = 0;
+	INT64 addtime2 = 0;
+	INT64 addtime3 = 0;
+	INT64 addtime4 = 0;
+	BOOL ParasitesToggle = FALSE;
+	int localtimeoffset = 0;
 };
 
 class Application
