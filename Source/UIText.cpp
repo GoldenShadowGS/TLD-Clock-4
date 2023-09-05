@@ -33,18 +33,21 @@ void UIText::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused)
 BOOL UIText::AddChar(char value)
 {
 	BOOL result = FALSE;
-	if (value >= '0' && value <= '9')
+	if (!m_pTimer->isStarted())
 	{
-		result = m_TimeString.Add(value);
-		m_pTimer->Reset(m_TimeString.GetTime());
+		if (value >= '0' && value <= '9')
+		{
+			result = m_TimeString.Add(value);
+			m_pTimer->Reset(m_TimeString.GetTime());
+		}
+		else if (value == 8)
+		{
+			result = m_TimeString.Back();
+			m_pTimer->Reset(m_TimeString.GetTime());
+		}
+		if (result)
+			m_ActivateFunction();
 	}
-	else if (value == 8)
-	{
-		result = m_TimeString.Back();
-		m_pTimer->Reset(m_TimeString.GetTime());
-	}
-	if (result)
-		m_ActivateFunction();
 	return result;
 }
 
@@ -79,6 +82,9 @@ void UIText::AddTime(INT64 time)
 
 void UIText::SetTime(INT64 time)
 {
-	m_pTimer->Reset(time);
-	m_TimeString.Set(m_pTimer->GetTime());
+	if (!m_pTimer->isStarted())
+	{
+		m_pTimer->Reset(time);
+		m_TimeString.Set(m_pTimer->GetTime());
+	}
 }

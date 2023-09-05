@@ -66,10 +66,10 @@ BOOL TimeString::Clear()
 
 void TimeString::Set(INT64 ms)
 {
-	INT64 tenths = ms / 100;
-	INT64 Minutes = (ms / 1000) % 60;
-	INT64 Hours = (ms / 60000) % 24;
-	INT64 Days = ms / 1440000;
+	INT64 tenths = ms / 500;  // 100
+	INT64 Minutes = (ms / 5000) % 60;  // 1000
+	INT64 Hours = (ms / 300000) % 24;  // 60000
+	INT64 Days = ms / 7200000;  // 1440000
 
 	char digits[maxRawSize] =
 	{
@@ -103,25 +103,25 @@ INT64 TimeString::GetTime()
 			switch (index)
 			{
 			case 0:
-				return 14400000000LL; // Days Thousands
+				return 72000000000LL; // Days Thousands  14400000000LL
 			case 1:
-				return 1440000000LL; // Days Thousands
+				return 7200000000LL; // Days Thousands  1440000000LL
 			case 2:
-				return 144000000LL; // Days Hundreds
+				return 720000000LL; // Days Hundreds  144000000LL
 			case 3:
-				return 14400000LL; // Days Tens
+				return 72000000LL; // Days Tens  14400000LL
 			case 4:
-				return 1440000LL; // Days Ones
+				return 7200000LL; // Days Ones  1440000LL
 			case 5:
-				return 600000LL; // Hours Tens
+				return 3000000LL; // Hours Tens  600000LL
 			case 6:
-				return 60000LL; // Hours Ones
+				return 300000LL; // Hours Ones  60000LL
 			case 7:
-				return 10000LL; // Minutes Tens
+				return 50000LL; // Minutes Tens  10000LL
 			case 8:
-				return 1000LL; // Minutes Ones
+				return 5000LL; // Minutes Ones  1000LL
 			case 9:
-				return 100LL; // Tenths
+				return 500LL; // Tenths  100LL
 			default:
 				return 0LL;
 			}
@@ -269,10 +269,15 @@ BOOL TimeStringSmall::Clear()
 
 void TimeStringSmall::Set(INT64 ms)
 {
-	INT64 tenths = ms / 100;
-	INT64 Minutes = (ms / 1000) % 60;
-	INT64 Hours = (ms / 60000) % 24;
-	INT64 Days = ms / 1440000;
+	INT64 tenths = ms / 500;  // 100
+	INT64 Minutes = (ms / 5000) % 60;  // 1000
+	INT64 Hours = (ms / 300000) % 24;  // 60000
+	INT64 Days = ms / 7200000;  // 1440000
+
+	//INT64 tenths = ms / 100;
+	//INT64 Minutes = (ms / 1000) % 60;
+	//INT64 Hours = (ms / 60000) % 24;
+	//INT64 Days = ms / 1440000;
 
 	char digits[maxRawSize] =
 	{
@@ -302,17 +307,17 @@ INT64 TimeStringSmall::GetTime()
 			switch (index)
 			{
 			case 0:
-				return 1440000LL; // Days Ones
+				return 7200000LL; // Days Ones  1440000LL
 			case 1:
-				return 600000LL; // Hours Tens
+				return 3000000LL; // Hours Tens  600000LL
 			case 2:
-				return 60000LL; // Hours Ones
+				return 300000LL; // Hours Ones  60000LL
 			case 3:
-				return 10000LL; // Minutes Tens
+				return 50000LL; // Minutes Tens  10000LL
 			case 4:
-				return 1000LL; // Minutes Ones
+				return 5000LL; // Minutes Ones  1000LL
 			case 5:
-				return 100LL; // Tenths
+				return 500LL; // Tenths  100LL
 			default:
 				return 0LL;
 			}

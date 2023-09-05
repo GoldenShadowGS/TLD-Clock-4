@@ -13,6 +13,7 @@
 #include <d2d1_2helper.h>
 #include <dcomp.h>
 #include <d2d1effects.h>
+#include <dwrite.h>
 
 #include <functional>
 #include <vector>

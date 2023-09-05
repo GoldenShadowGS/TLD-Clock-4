@@ -15,9 +15,10 @@ UIAlarmDisplay::UIAlarmDisplay(const RECT& buttonrect, ID2D1Factory2* factory, I
 
 void UIAlarmDisplay::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused)
 {
+	INT64 remainingtime = GetRemainingtime();
 	if (!AlarmBeeped)
 	{
-		if (GetRemainingtime() == 0)
+		if (remainingtime == 0)
 		{
 			m_AlarmSet = FALSE;
 			AlarmBeeped = TRUE;
@@ -25,19 +26,14 @@ void UIAlarmDisplay::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focus
 		}
 	}
 
-	//if (m_Timer->isStarted())
-	m_TimeString.Set(GetRemainingtime());
+	if (remainingtime > 0)
+	{
+		m_TimeString.Set(GetRemainingtime());
 
-	float stringwidthhalf = m_Alarmtime.GetStringWidth(m_TimeString) / 2.0f;
-	D2D1::Matrix3x2F transform = D2D1::Matrix3x2F::Translation(m_Center.x - stringwidthhalf, m_Center.y - m_Alarmtime.GetDigitHeight() / 2.0f);
-	m_Alarmtime.DrawDigits(dc, m_TimeString, transform);
-
-	// Debug
-	//dc->SetTransform(D2D1::Matrix3x2F::Translation(m_Center.x, m_Center.y));
-	//float widthhalf = (float)(m_Rect.right - m_Rect.left) / 2.0f;
-	//float heighthalf = (float)(m_Rect.bottom - m_Rect.top) / 2.0f;
-	//D2D_RECT_F UI_Rect = { -widthhalf, -heighthalf, widthhalf, heighthalf };
-	//dc->FillRectangle(UI_Rect, Brush.Get());
+		float stringwidthhalf = m_Alarmtime.GetStringWidth(m_TimeString) / 2.0f;
+		D2D1::Matrix3x2F transform = D2D1::Matrix3x2F::Translation(m_Center.x - stringwidthhalf, m_Center.y - m_Alarmtime.GetDigitHeight() / 2.0f);
+		m_Alarmtime.DrawDigits(dc, m_TimeString, transform);
+	}
 }
 
 INT64 UIAlarmDisplay::GetRemainingtime()
@@ -55,5 +51,10 @@ void UIAlarmDisplay::SetTime(INT64 time)
 		m_AlarmTime = time + m_Timer->GetTime();
 		m_TimeString.Set(GetRemainingtime());
 		AlarmBeeped = FALSE;
+	}
+	else if (time == 0 && GetRemainingtime() > 0)
+	{
+		m_AlarmSet = FALSE;
+		AlarmBeeped = TRUE;
 	}
 }

@@ -10,7 +10,7 @@
 
 //
 //ToDO
-// Sun sync toggle, so you can drag sun to adjust time 
+// Add Sun sync toggle, so you can drag sun to adjust time 
 
 // Test everything
 
@@ -83,7 +83,7 @@ int Application::Run(HINSTANCE hInstance)
 		{
 			if (!timer.isStarted())
 			{
-				timer.Start(100);
+				timer.Start(200);
 				soundManager.Play(SOUND_START, 1.0f, 1.0f);
 				return FALSE;
 			}
@@ -140,7 +140,7 @@ int Application::Run(HINSTANCE hInstance)
 	AddText1.SetTime(savestate.addtime1);
 	vectorUIElements.push_back(&AddText1);
 
-	UIButton EditSubmit1(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 300, 80, 32), FALSE, [&] (BOOL LMB)
+	UIButton EditSubmit1(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 300, 80, 32), FALSE, [&] (BOOL LMB)
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			if (LMB)
@@ -160,7 +160,7 @@ int Application::Run(HINSTANCE hInstance)
 	AddText2.SetTime(savestate.addtime2);
 	vectorUIElements.push_back(&AddText2);
 
-	UIButton EditSubmit2(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 350, 80, 32), FALSE, [&] (BOOL LMB)
+	UIButton EditSubmit2(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 350, 80, 32), FALSE, [&] (BOOL LMB)
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			if (LMB)
@@ -180,7 +180,7 @@ int Application::Run(HINSTANCE hInstance)
 	AddText3.SetTime(savestate.addtime3);
 	vectorUIElements.push_back(&AddText3);
 
-	UIButton EditSubmit3(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 400, 80, 32), FALSE, [&] (BOOL LMB)
+	UIButton EditSubmit3(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 400, 80, 32), FALSE, [&] (BOOL LMB)
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			if (LMB)
@@ -200,7 +200,7 @@ int Application::Run(HINSTANCE hInstance)
 	AddText4.SetTime(savestate.addtime4);
 	vectorUIElements.push_back(&AddText4);
 
-	UIButton EditSubmit4(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 450, 80, 32), FALSE, [&] (BOOL LMB)
+	UIButton EditSubmit4(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 450, 80, 32), FALSE, [&] (BOOL LMB)
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			if (LMB)
@@ -220,7 +220,7 @@ int Application::Run(HINSTANCE hInstance)
 	AlarmEditBox.SetTime(savestate.alarmeditbox);
 	vectorUIElements.push_back(&AlarmEditBox);
 
-	UIButton AlarmSubmitBox(CreateSunImage(factory, dc, 20.0f), MakeRect(50, 230, 80, 50), FALSE, [&] (BOOL LMB)
+	UIButton AlarmSubmitBox(CreateTextImage(dc, L"Set Alarm", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 230, 80, 50), FALSE, [&] (BOOL LMB)
 		{
 			alarmDisplay.SetTime(AlarmEditBox.GetTime());
 			return TRUE;
@@ -261,9 +261,9 @@ void Application::Update()
 	dc->BeginDraw();
 	dc->Clear();
 
-	D2D_RECT_F UI_Rect = { 0.0f, 180.0f, (float)WindowWidth, (float)WindowHeight };
-	D2D1_POINT_2F p1 = { 0.0f, 180.0f };
-	D2D1_POINT_2F p2 = { 440.0f, 180.0f };
+	D2D_RECT_F UI_Rect = { 0.0f, 190.0f, (float)WindowWidth, (float)WindowHeight };
+	D2D1_POINT_2F p1 = { 0.0f, 190.0f };
+	D2D1_POINT_2F p2 = { 440.0f, 190.0f };
 	dc->SetTransform(D2D1::Matrix3x2F::Identity());
 	dc->FillRectangle(UI_Rect, BKGBrush.Get());
 	dc->DrawLine(p1, p2, BorderBrush.Get(), 1.0f);

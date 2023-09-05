@@ -9,6 +9,7 @@ struct Image
 };
 
 Image LoadBitmapImage(ID2D1DeviceContext* dc, int resource);
+Image CreateTextImage(ID2D1DeviceContext* dc, const std::wstring& text, float width,float height, float fontsize, float verticaloffset);
 Image CreateSunImage(ID2D1Factory2* factory, ID2D1DeviceContext* dc, float size);
 Image CreateMoonImage(ID2D1Factory2* factory, ID2D1DeviceContext* dc, float size);
 Image CreatePlayImage(ID2D1Factory2* factory, ID2D1DeviceContext* dc, float size);

@@ -27,4 +27,5 @@ private:
 	Timer* m_Timer;
 	std::function <void()> m_PlaySound;
 	ComPtr<ID2D1SolidColorBrush> Brush;
+	ComPtr<ID2D1SolidColorBrush> HighlightBrush;
 };
