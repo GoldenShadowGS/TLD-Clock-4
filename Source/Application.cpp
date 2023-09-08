@@ -83,7 +83,7 @@ int Application::Run(HINSTANCE hInstance)
 		{
 			if (!timer.isStarted())
 			{
-				timer.Start(200);
+				timer.Start(500);
 				soundManager.Play(SOUND_START, 1.0f, 1.0f);
 				return FALSE;
 			}
@@ -109,6 +109,10 @@ int Application::Run(HINSTANCE hInstance)
 	UIText MainClockText(factory, dc, &timer, MakeRect(200, 150, 100, 30), TRUE, -10.0f, [&] ()
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
+			if (timer.isStarted())
+			{
+				PlayButton.Press(0, 0, TRUE);
+			}
 			return TRUE;
 		});
 	MainClockText.SetTime(savestate.maintime);

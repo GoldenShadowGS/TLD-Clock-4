@@ -33,28 +33,26 @@ void UIText::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused)
 BOOL UIText::AddChar(char value)
 {
 	BOOL result = FALSE;
-	if (!m_pTimer->isStarted())
+	//if (!m_pTimer->isStarted())
 	{
 		if (value >= '0' && value <= '9')
-		{
 			result = m_TimeString.Add(value);
-			m_pTimer->Reset(m_TimeString.GetTime());
-		}
 		else if (value == 8)
-		{
 			result = m_TimeString.Back();
+		if (result)
+		{
+			m_ActivateFunction();
 			m_pTimer->Reset(m_TimeString.GetTime());
 		}
-		if (result)
-			m_ActivateFunction();
 	}
 	return result;
 }
 
 BOOL UIText::KeyDown(int value)
 {
-	if (value == VK_DELETE && !m_pTimer->isStarted())
+	if (value == VK_DELETE)
 	{
+		m_ActivateFunction();
 		m_pTimer->Reset(0);
 		return m_TimeString.Clear();
 	}
