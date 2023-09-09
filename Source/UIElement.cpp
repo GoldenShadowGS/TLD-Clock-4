@@ -14,3 +14,8 @@ BOOL UIElementBase::HitTest(int x, int y)
 {
 	return (x > m_Rect.left && x < m_Rect.right && y > m_Rect.top && y < m_Rect.bottom);
 }
+
+void UIElementBase::LoseFocus()
+{
+
+}

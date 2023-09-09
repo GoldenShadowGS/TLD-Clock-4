@@ -19,6 +19,7 @@ public:
 	virtual BOOL AddChar(char value) { return FALSE; }
 	virtual BOOL KeyDown(int value) { return FALSE; }
 	virtual BOOL HitTest(int x, int y);
+	virtual void LoseFocus();
 	inline BOOL isGrabLocked() { return m_GrabLock; }
 protected:
 	BOOL m_GrabLock = FALSE;

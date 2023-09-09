@@ -70,10 +70,18 @@ float UIEditText::GetStringWidth()
 
 INT64 UIEditText::GetTime()
 {
-	return m_TimeString.GetTime();
+	INT64 time = min(m_TimeString.GetTime(), MAXTIME);
+	m_TimeString.Set(time);
+	return time;
 }
 
 void UIEditText::SetTime(INT64 time)
 {
+	m_TimeString.Set(min(time, MAXTIME));
+}
+
+void UIEditText::LoseFocus()
+{
+	INT64 time = min(m_TimeString.GetTime(), MAXTIME);
 	m_TimeString.Set(time);
 }

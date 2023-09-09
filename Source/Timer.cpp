@@ -26,7 +26,7 @@ void Timer::Start(INT64 SyncInterval)
 		{
 			m_bTimerThreadRunning = TRUE;
 			m_ClockThread = std::jthread(&Timer::ReDrawSync, this, SyncInterval);
-			// Spawns a thread to synchronize drawing to tenth of a second
+			// Spawns a thread to synchronize drawing to tenth of a minute
 		}
 	}
 }
@@ -54,7 +54,7 @@ void Timer::AddTime(INT64 time)
 
 INT64 Timer::GetTime()
 {
-	return m_ThreadSafeTimer.GetTime(m_bStarted);
+	return min(m_ThreadSafeTimer.GetTime(m_bStarted), MAXTIME);
 }
 
 void Timer::ReDraw()
@@ -66,7 +66,7 @@ void Timer::ReDrawSync(INT64 SyncInterval)
 {
 	while (m_bStarted)
 	{
-		// Syncs redraws to tenths of a second intervals
+		// Syncs redraws to tenths of a minute intervals
 		INT64 CurrentTime = m_ThreadSafeTimer.GetTime(m_bStarted);
 		INT64 difference = CurrentTime - ((CurrentTime / SyncInterval) * SyncInterval);
 		INT64 sleeptime = SyncInterval - difference;

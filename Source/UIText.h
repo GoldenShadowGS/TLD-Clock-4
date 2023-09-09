@@ -5,6 +5,7 @@
 #include "SevenSegment.h"
 
 class Timer;
+class UIAlarmDisplay;
 
 class UIText : public UIElementBase
 {
@@ -17,10 +18,15 @@ public:
 	void AddTime(INT64 time);
 	float GetStringWidth();
 	void SetTime(INT64 time);
+	void LoseFocus() override;
+	inline void SetAlarmPtr(UIAlarmDisplay* alarmptr) { m_pAlarm = alarmptr; }
 private:
 	SevenSegment m_SevenSegment;
 	TimeString m_TimeString;
 	Timer* m_pTimer = nullptr;
 	std::function <BOOL()> m_ActivateFunction;
 	ComPtr<ID2D1SolidColorBrush> Brush;
+	static const INT64 MAXTIME = 719999995000;
+	UIAlarmDisplay* m_pAlarm = nullptr;
+
 };

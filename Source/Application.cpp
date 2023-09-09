@@ -7,13 +7,6 @@
 #include "UIAlarmDisplay.h"
 #include "UIEditText.h"
 
-
-//
-//ToDO
-// Add Sun sync toggle, so you can drag sun to adjust time 
-
-// Test everything
-
 const WCHAR* gTitle = L"TLD Clock";
 const WCHAR* gWindowClass = L"MainWindowClass";
 int WindowWidth = 400;
@@ -132,6 +125,7 @@ int Application::Run(HINSTANCE hInstance)
 		{
 			soundManager.Play(SOUND_ALARM, 1.0f, 1.0f);
 		});
+	MainClockText.SetAlarmPtr(&alarmDisplay);
 	alarmDisplay.SetTime(savestate.alarmtime);
 	vectorUIElements.push_back(&alarmDisplay);
 
@@ -226,7 +220,10 @@ int Application::Run(HINSTANCE hInstance)
 
 	UIButton AlarmSubmitBox(CreateTextImage(dc, L"Set Alarm", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 230, 80, 50), FALSE, [&] (BOOL LMB)
 		{
-			alarmDisplay.SetTime(AlarmEditBox.GetTime());
+			if (LMB)
+				alarmDisplay.SetTime(AlarmEditBox.GetTime());
+			else
+				alarmDisplay.SetTime(0);
 			return TRUE;
 		});
 	vectorUIElements.push_back(&AlarmSubmitBox);

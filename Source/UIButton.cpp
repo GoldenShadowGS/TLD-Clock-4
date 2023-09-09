@@ -36,7 +36,6 @@ void UIButton::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused)
 	D2D_RECT_F UI_Rect = { -widthhalf, -heighthalf, widthhalf, heighthalf };
 
 	dc->SetTransform(D2D1::Matrix3x2F::Translation(m_Center.x, m_Center.y));
-	//D2D_RECT_F UI_Rect = { (float)m_Rect.left, (float)m_Rect.top, (float)m_Rect.right, (float)m_Rect.bottom };
 	switch (state)
 	{
 	case STATE_NORMAL:
@@ -51,7 +50,6 @@ void UIButton::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused)
 	}
 	if (focused)
 		dc->DrawRectangle(UI_Rect, FocusedBrush.Get(), 5.0f);
-	//dc->DrawLine({ 0.0f, 0.0f }, m_EndPoint, FocusedBrush.Get());
 	if (TOGGLEBUTTON)
 	{
 		if (m_state)
@@ -80,13 +78,11 @@ void UIButton::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused)
 
 BOOL UIButton::MouseMoved(int x, int y)
 {
-	m_EndPoint = { float(x) - m_Center.x, float(y) - m_Center.y };
 	return TRUE;
 }
 
 BOOL UIButton::Press(int x, int y, BOOL LMB)
 {
-	m_EndPoint = { float(x) - m_Center.x, float(y) - m_Center.y };
 	m_state = m_ActivateFunction(LMB);
 	return TRUE;
 }

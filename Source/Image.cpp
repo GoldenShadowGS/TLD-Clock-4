@@ -6,8 +6,8 @@
 
 static std::vector<BYTE> FlipImage32bit(std::vector<BYTE>& Image, int pitch, int height)
 {
-	std::vector<BYTE> FlippedPixels;
-	FlippedPixels.resize(Image.size());
+	std::vector<BYTE> FlippedPixels(Image.size());
+	//FlippedPixels.resize(Image.size());
 	for (UINT64 row = 0; row < height; row++)
 	{
 		BYTE* SrcRow = Image.data() + (row * pitch);
@@ -16,6 +16,33 @@ static std::vector<BYTE> FlipImage32bit(std::vector<BYTE>& Image, int pitch, int
 	}
 	return FlippedPixels;
 }
+
+static std::vector<BYTE> PreMultiply(std::vector<BYTE>& Image, int width, int height)
+{
+	std::vector<BYTE> PreMultipliedPixels(Image.size());
+	DWORD* pPixelData = (DWORD*)Image.data();
+	DWORD* pDestPixel = (DWORD*)PreMultipliedPixels.data();
+
+	for (int j = 0; j < height; ++j)
+	{
+		for (int i = 0; i < width; ++i)
+		{
+			int index = (height - j - 1) * width + i;
+
+			DWORD d = pPixelData[index];
+
+			BYTE a = d >> 24;
+			BYTE pmR = static_cast<BYTE>(((d & 0x00FF0000) >> 16) * a / 255);
+			BYTE pmG = static_cast<BYTE>(((d & 0x0000FF00) >> 8) * a / 255);
+			BYTE pmB = static_cast<BYTE>(((d & 0x000000FF)) * a / 255);
+			d = pmB | (pmG << 8) | (pmR << 16) | (a << 24);
+
+			pDestPixel[index] = d;
+		}
+	}
+	return PreMultipliedPixels;
+}
+
 
 inline UINT Align(UINT uLocation, UINT uAlign)
 {
@@ -81,6 +108,7 @@ Image LoadBitmapImage(ID2D1DeviceContext* dc, int resource)
 	UINT Pitch;
 	std::vector<BYTE> Pixels32Bit = FileLoader(resource, PixelWidth, PixelHeight, Pitch);
 	std::vector<BYTE> FlippedPixels32Bit = FlipImage32bit(Pixels32Bit, Pitch, PixelHeight);
+	std::vector<BYTE> premultipliedpixels = PreMultiply(FlippedPixels32Bit, PixelWidth, PixelHeight);
 	D2D1_SIZE_U bitmapsize = {};
 	bitmapsize.width = PixelWidth;
 	bitmapsize.height = PixelHeight;
@@ -96,7 +124,7 @@ Image LoadBitmapImage(ID2D1DeviceContext* dc, int resource)
 	bitmapprops.dpiX = 96.0f;
 	bitmapprops.dpiY = 96.0f;
 
-	HR(dc->CreateBitmap(bitmapsize, FlippedPixels32Bit.data(), Pitch, bitmapprops, image.m_Bitmap.ReleaseAndGetAddressOf()));
+	HR(dc->CreateBitmap(bitmapsize, premultipliedpixels.data(), Pitch, bitmapprops, image.m_Bitmap.ReleaseAndGetAddressOf()));
 
 	return image;
 }

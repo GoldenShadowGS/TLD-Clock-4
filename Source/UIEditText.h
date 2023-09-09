@@ -18,9 +18,11 @@ public:
 	float GetStringWidth();
 	INT64 GetTime();
 	void SetTime(INT64 time);
+	void LoseFocus() override;
 private:
 	SevenSegment m_SevenSegment;
 	TimeStringSmall m_TimeString;
 	std::function <BOOL()> m_ActivateFunction;
 	static inline ComPtr<ID2D1SolidColorBrush> Brush;
+	static const INT64 MAXTIME = 71995000;
 };

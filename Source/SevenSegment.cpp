@@ -120,7 +120,6 @@ void SevenSegment::DrawDigits(ID2D1DeviceContext* dc, const TimeString& timeStri
 {
 	D2D1::Matrix3x2F maintransform = m_Skew * transform;
 	D2D1::Matrix3x2F digittransform = D2D1::Matrix3x2F::Identity();
-	//D2D1::Matrix3x2F scaletransform = D2D1::Matrix3x2F::Scale(m_Scale, m_Scale);
 	D2D1_RECT_F rect = D2D1::RectF(0.0f, 0.0f, GetDigitWidth(), GetDigitHeight());
 	const int size = timeString.GetSize();
 

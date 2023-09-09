@@ -20,6 +20,10 @@ private:
 		inline BOOL ButtonDown(HWND hwnd, MOUSEBUTTONS button, int x, int y)
 		{
 			BOOL redraw { FALSE };
+			if (FocusedElement && FocusedElement != HoverElement)
+			{
+				FocusedElement->LoseFocus();
+			}
 			if (!GrabbedElement && HoverElement)
 			{
 				GrabbedElement = HoverElement;

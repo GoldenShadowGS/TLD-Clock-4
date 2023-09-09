@@ -34,7 +34,7 @@ BOOL TimeString::Back()
 	if (rawIndex > 1)
 	{
 		rawIndex--;
-		rawArray[rawIndex-1] = rawArray[rawIndex];
+		rawArray[rawIndex - 1] = rawArray[rawIndex];
 		rawArray[rawIndex] = 0;
 		FormatArray();
 		return TRUE;
@@ -59,9 +59,8 @@ BOOL TimeString::Clear()
 		}
 		rawIndex = 0;
 		FormatArray();
-		return TRUE;
 	}
-	return FALSE;
+	return TRUE;
 }
 
 void TimeString::Set(INT64 ms)
@@ -273,11 +272,6 @@ void TimeStringSmall::Set(INT64 ms)
 	INT64 Minutes = (ms / 5000) % 60;  // 1000
 	INT64 Hours = (ms / 300000) % 24;  // 60000
 	INT64 Days = ms / 7200000;  // 1440000
-
-	//INT64 tenths = ms / 100;
-	//INT64 Minutes = (ms / 1000) % 60;
-	//INT64 Hours = (ms / 60000) % 24;
-	//INT64 Days = ms / 1440000;
 
 	char digits[maxRawSize] =
 	{

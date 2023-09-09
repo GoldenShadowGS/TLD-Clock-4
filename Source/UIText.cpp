@@ -2,6 +2,7 @@
 #include "UIText.h"
 #include "Renderer.h"
 #include "Timer.h"
+#include "UIAlarmDisplay.h"
 
 UIText::UIText(ID2D1Factory2* pD2DFactory, ID2D1DeviceContext* dc, Timer* pTimer, const RECT& buttonrect, BOOL GrabLock, float skew, std::function <BOOL()> activation) :
 	UIElementBase(buttonrect, GrabLock)
@@ -33,7 +34,6 @@ void UIText::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused)
 BOOL UIText::AddChar(char value)
 {
 	BOOL result = FALSE;
-	//if (!m_pTimer->isStarted())
 	{
 		if (value >= '0' && value <= '9')
 			result = m_TimeString.Add(value);
@@ -54,6 +54,7 @@ BOOL UIText::KeyDown(int value)
 	{
 		m_ActivateFunction();
 		m_pTimer->Reset(0);
+		m_pAlarm->SetTime(0);
 		return m_TimeString.Clear();
 	}
 	return FALSE;
@@ -84,5 +85,15 @@ void UIText::SetTime(INT64 time)
 	{
 		m_pTimer->Reset(time);
 		m_TimeString.Set(m_pTimer->GetTime());
+	}
+}
+
+void UIText::LoseFocus()
+{
+	if (!m_pTimer->isStarted())
+	{
+		INT64 time = min(m_TimeString.GetTime(), MAXTIME);
+		m_TimeString.Set(time);
+		m_pTimer->Reset(time);
 	}
 }

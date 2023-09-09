@@ -20,7 +20,6 @@ private:
 	static inline ComPtr<ID2D1SolidColorBrush> GrabbedBrush;
 	Image m_ImageOn;
 	Image m_ImageOff;
-	D2D1_POINT_2F m_EndPoint = { };
 	std::function <BOOL(BOOL LMB)> m_ActivateFunction;
 	const BOOL TOGGLEBUTTON;
 	BOOL m_state;

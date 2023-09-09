@@ -28,6 +28,8 @@ class Timer
 			INT64 currentTime = isStarted ? m_Duration + GetActiveDuration() : m_Duration;
 			if (currentTime < 0)
 				m_Duration -= currentTime;
+			else if (currentTime > MAXTIME)
+				m_Duration = MAXTIME;
 		}
 		INT64 GetTime(BOOL isStarted)
 		{
@@ -66,4 +68,5 @@ private:
 	std::jthread m_ClockThread;
 	std::atomic<BOOL> m_bStarted = FALSE;
 	std::atomic<BOOL> m_bTimerThreadRunning = FALSE;
+	static const INT64 MAXTIME = 719999995000;
 };
