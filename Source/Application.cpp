@@ -70,6 +70,16 @@ int Application::Run(HINSTANCE hInstance)
 			return rect;
 		};
 
+	const D2D1::ColorF maincolor1 = D2D1::ColorF(0.48f, 0.33f, 0.54f, 1.0f);
+	const D2D1::ColorF maincolor2 = D2D1::ColorF(0.86f, 0.61f, 0.97f, 1.0f);
+	const D2D1::ColorF purple1 = D2D1::ColorF(0.1f, 0.1f, 0.1f, 1.0f);
+	const D2D1::ColorF purple2 = D2D1::ColorF(0.86f, 0.61f, 0.97f, 1.0f);
+	const D2D1::ColorF red1 = D2D1::ColorF(0.48f, 0.13f, 0.14f, 1.0f);
+	const D2D1::ColorF red2 = D2D1::ColorF(0.86f, 0.21f, 0.27f, 1.0f);
+	const D2D1::ColorF green1 = D2D1::ColorF(0.13f, 0.48f, 0.33f, 1.0f);
+	const D2D1::ColorF green2 = D2D1::ColorF(0.22f, 0.86f, 0.50f, 1.0f);
+	const D2D1::ColorF editgreen1 = D2D1::ColorF(0.06f, 0.24f, 0.16f, 1.0f);
+
 	std::vector<UIElementBase*> vectorUIElements;
 
 	UIButton PlayButton(CreatePlayImage(factory, dc, 50), CreatePauseImage(factory, dc, 50), TRUE, MakeRect(300, 250, 100, 80), FALSE, [&] (BOOL LMB)
@@ -99,7 +109,7 @@ int Application::Run(HINSTANCE hInstance)
 		});
 	vectorUIElements.push_back(&ParasitesToggle);
 
-	UIText MainClockText(factory, dc, &timer, MakeRect(200, 150, 100, 30), TRUE, -10.0f, [&] ()
+	UIText MainClockText(factory, dc, &timer, MakeRect(200, 150, 100, 30), TRUE, -10.0f, maincolor1, maincolor2, [&] ()
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			if (timer.isStarted())
@@ -121,16 +131,24 @@ int Application::Run(HINSTANCE hInstance)
 	vectorUIElements.push_back(&LocalTime);
 
 
-	UIAlarmDisplay alarmDisplay(MakeRect(80, 50, 100, 50), factory, dc, &timer, D2D1::ColorF(0.48f, 0.13f, 0.14f, 1.0f), D2D1::ColorF(0.86f, 0.21f, 0.27f, 1.0f), [&] ()
+	UIAlarmDisplay TopAlarmDisplay(MakeRect(80, 50, 100, 50), factory, dc, &timer, red1, red2, [&] ()
 		{
-			soundManager.Play(SOUND_ALARM, 1.0f, 1.0f);
+			soundManager.Play(SOUND_ALARM1, 1.0f, 1.0f);
 		});
-	MainClockText.SetAlarmPtr(&alarmDisplay);
-	alarmDisplay.SetTime(savestate.alarmtime);
-	vectorUIElements.push_back(&alarmDisplay);
+	TopAlarmDisplay.SetTime(savestate.alarmtime1);
+	vectorUIElements.push_back(&TopAlarmDisplay);
+
+	UIAlarmDisplay BottomAlarmDisplay(MakeRect(80, 110, 100, 50), factory, dc, &timer, green1, green2, [&] ()
+		{
+			soundManager.Play(SOUND_ALARM2, 1.0f, 1.0f);
+		});
+	MainClockText.SetAlarmPtr1(&TopAlarmDisplay);
+	MainClockText.SetAlarmPtr2(&BottomAlarmDisplay);
+	BottomAlarmDisplay.SetTime(savestate.alarmtime2);
+	vectorUIElements.push_back(&BottomAlarmDisplay);
 
 	//1
-	UIEditText AddText1(factory, dc, MakeRect(160, 300, 100, 25), TRUE, -10.0f, [&] ()
+	UIEditText AddText1(factory, dc, MakeRect(160, 310, 100, 25), TRUE, -10.0f, purple1, purple2, [&] ()
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
@@ -138,7 +156,7 @@ int Application::Run(HINSTANCE hInstance)
 	AddText1.SetTime(savestate.addtime1);
 	vectorUIElements.push_back(&AddText1);
 
-	UIButton EditSubmit1(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 300, 80, 32), FALSE, [&] (BOOL LMB)
+	UIButton EditSubmit1(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 310, 80, 32), FALSE, [&] (BOOL LMB)
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			if (LMB)
@@ -150,7 +168,7 @@ int Application::Run(HINSTANCE hInstance)
 	vectorUIElements.push_back(&EditSubmit1);
 
 	//2
-	UIEditText AddText2(factory, dc, MakeRect(160, 350, 100, 25), TRUE, -10.0f, [&] ()
+	UIEditText AddText2(factory, dc, MakeRect(160, 360, 100, 25), TRUE, -10.0f, purple1, purple2, [&] ()
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
@@ -158,7 +176,7 @@ int Application::Run(HINSTANCE hInstance)
 	AddText2.SetTime(savestate.addtime2);
 	vectorUIElements.push_back(&AddText2);
 
-	UIButton EditSubmit2(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 350, 80, 32), FALSE, [&] (BOOL LMB)
+	UIButton EditSubmit2(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 360, 80, 32), FALSE, [&] (BOOL LMB)
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			if (LMB)
@@ -170,7 +188,7 @@ int Application::Run(HINSTANCE hInstance)
 	vectorUIElements.push_back(&EditSubmit2);
 
 	// 3
-	UIEditText AddText3(factory, dc, MakeRect(160, 400, 100, 25), TRUE, -10.0f, [&] ()
+	UIEditText AddText3(factory, dc, MakeRect(160, 410, 100, 25), TRUE, -10.0f, purple1, purple2, [&] ()
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
@@ -178,7 +196,7 @@ int Application::Run(HINSTANCE hInstance)
 	AddText3.SetTime(savestate.addtime3);
 	vectorUIElements.push_back(&AddText3);
 
-	UIButton EditSubmit3(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 400, 80, 32), FALSE, [&] (BOOL LMB)
+	UIButton EditSubmit3(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 410, 80, 32), FALSE, [&] (BOOL LMB)
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			if (LMB)
@@ -190,7 +208,7 @@ int Application::Run(HINSTANCE hInstance)
 	vectorUIElements.push_back(&EditSubmit3);
 
 	// 4
-	UIEditText AddText4(factory, dc, MakeRect(160, 450, 100, 25), TRUE, -10.0f, [&] ()
+	UIEditText AddText4(factory, dc, MakeRect(160, 460, 100, 25), TRUE, -10.0f, purple1, purple2, [&] ()
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
@@ -198,7 +216,7 @@ int Application::Run(HINSTANCE hInstance)
 	AddText4.SetTime(savestate.addtime4);
 	vectorUIElements.push_back(&AddText4);
 
-	UIButton EditSubmit4(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 450, 80, 32), FALSE, [&] (BOOL LMB)
+	UIButton EditSubmit4(CreateTextImage(dc, L"Add Time", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 460, 80, 32), FALSE, [&] (BOOL LMB)
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			if (LMB)
@@ -209,24 +227,43 @@ int Application::Run(HINSTANCE hInstance)
 		});
 	vectorUIElements.push_back(&EditSubmit4);
 
-	// Alarm EditBox
-	UIEditText AlarmEditBox(factory, dc, MakeRect(160, 230, 100, 25), TRUE, -10.0f, [&] ()
+	// Top Alarm EditBox
+	UIEditText TopAlarmEditBox(factory, dc, MakeRect(160, 220, 100, 25), TRUE, -10.0f, red1, red2, [&] ()
 		{
 			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
 			return TRUE;
 		});
-	AlarmEditBox.SetTime(savestate.alarmeditbox);
-	vectorUIElements.push_back(&AlarmEditBox);
+	TopAlarmEditBox.SetTime(savestate.alarmeditbox1);
+	vectorUIElements.push_back(&TopAlarmEditBox);
 
-	UIButton AlarmSubmitBox(CreateTextImage(dc, L"Set Alarm", 80.0f, 32.0f, 16.0f, 8.0f), MakeRect(50, 230, 80, 50), FALSE, [&] (BOOL LMB)
+	UIButton TopAlarmSubmitBox(CreateTextImage(dc, L"Set Alarm 1", 80.0f, 36.0f, 15.0f, 8.0f), MakeRect(50, 220, 84, 32), FALSE, [&] (BOOL LMB)
 		{
 			if (LMB)
-				alarmDisplay.SetTime(AlarmEditBox.GetTime());
+				TopAlarmDisplay.SetTime(TopAlarmEditBox.GetTime());
 			else
-				alarmDisplay.SetTime(0);
+				TopAlarmDisplay.SetTime(0);
 			return TRUE;
 		});
-	vectorUIElements.push_back(&AlarmSubmitBox);
+	vectorUIElements.push_back(&TopAlarmSubmitBox);
+
+	// Bottom Alarm EditBox
+	UIEditText BottomAlarmEditBox(factory, dc, MakeRect(160, 260, 100, 25), TRUE, -10.0f, editgreen1, green2, [&] ()
+		{
+			soundManager.Play(SOUND_CLICK, 0.35f, 0.65f);
+			return TRUE;
+		});
+	BottomAlarmEditBox.SetTime(savestate.alarmeditbox2);
+	vectorUIElements.push_back(&BottomAlarmEditBox);
+
+	UIButton BottomAlarmSubmitBox(CreateTextImage(dc, L"Set Alarm 2", 80.0f, 36.0f, 15.0f, 8.0f), MakeRect(50, 260, 84, 32), FALSE, [&] (BOOL LMB)
+		{
+			if (LMB)
+				BottomAlarmDisplay.SetTime(BottomAlarmEditBox.GetTime());
+			else
+				BottomAlarmDisplay.SetTime(0);
+			return TRUE;
+		});
+	vectorUIElements.push_back(&BottomAlarmSubmitBox);
 
 
 	m_UIElements.Set(vectorUIElements);
@@ -242,8 +279,10 @@ int Application::Run(HINSTANCE hInstance)
 		DispatchMessage(&msg);
 	}
 	savestate.maintime = timer.GetTime();
-	savestate.alarmtime = alarmDisplay.GetRemainingtime();
-	savestate.alarmeditbox = AlarmEditBox.GetTime();
+	savestate.alarmtime1 = TopAlarmDisplay.GetRemainingtime();
+	savestate.alarmtime2 = BottomAlarmDisplay.GetRemainingtime();
+	savestate.alarmeditbox1 = TopAlarmEditBox.GetTime();
+	savestate.alarmeditbox2 = BottomAlarmEditBox.GetTime();
 	savestate.addtime1 = AddText1.GetTime();
 	savestate.addtime2 = AddText2.GetTime();
 	savestate.addtime3 = AddText3.GetTime();

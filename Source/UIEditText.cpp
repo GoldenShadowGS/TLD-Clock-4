@@ -8,12 +8,12 @@ void UIEditText::InitResources(ID2D1DeviceContext* dc)
 	HR(dc->CreateSolidColorBrush(D2D1::ColorF(0.79f, 0.5f, 0.8f, 0.3f), Brush.ReleaseAndGetAddressOf()));
 }
 
-UIEditText::UIEditText(ID2D1Factory2* pD2DFactory, ID2D1DeviceContext* dc, const RECT& buttonrect, BOOL GrabLock, float skew, std::function <BOOL()> activation) :
+UIEditText::UIEditText(ID2D1Factory2* pD2DFactory, ID2D1DeviceContext* dc, const RECT& buttonrect, BOOL GrabLock, float skew, const D2D1::ColorF& color1, const D2D1::ColorF& color2, std::function <BOOL()> activation) :
 	UIElementBase(buttonrect, GrabLock)
 {
 	m_ActivateFunction = activation;
 	float size = float(buttonrect.bottom - buttonrect.top) * 0.4f;
-	m_SevenSegment.Init(pD2DFactory, dc, size, skew, D2D1::ColorF(0.1f, 0.1f, 0.1f, 1.0f), D2D1::ColorF(0.86f, 0.61f, 0.97f, 1.0f));
+	m_SevenSegment.Init(pD2DFactory, dc, size, skew, color1, color2);
 }
 
 void UIEditText::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused)
@@ -84,4 +84,13 @@ void UIEditText::LoseFocus()
 {
 	INT64 time = min(m_TimeString.GetTime(), MAXTIME);
 	m_TimeString.Set(time);
+}
+
+BOOL UIEditText::Press(int x, int y, BOOL LMB)
+{
+	if (!LMB)
+	{
+		SetTime(0);
+	}
+	return TRUE;
 }

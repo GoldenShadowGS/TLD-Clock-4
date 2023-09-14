@@ -4,13 +4,13 @@
 #include "Timer.h"
 #include "UIAlarmDisplay.h"
 
-UIText::UIText(ID2D1Factory2* pD2DFactory, ID2D1DeviceContext* dc, Timer* pTimer, const RECT& buttonrect, BOOL GrabLock, float skew, std::function <BOOL()> activation) :
+UIText::UIText(ID2D1Factory2* pD2DFactory, ID2D1DeviceContext* dc, Timer* pTimer, const RECT& buttonrect, BOOL GrabLock, float skew, const D2D1::ColorF& color1, const D2D1::ColorF& color2, std::function <BOOL()> activation) :
 	UIElementBase(buttonrect, GrabLock)
 {
 	m_ActivateFunction = activation;
 	m_pTimer = pTimer;
 	float size = float(buttonrect.bottom - buttonrect.top) * 0.4f;
-	m_SevenSegment.Init(pD2DFactory, dc, size, skew, D2D1::ColorF(0.48f, 0.33f, 0.54f, 1.0f), D2D1::ColorF(0.86f, 0.61f, 0.97f, 1.0f));
+	m_SevenSegment.Init(pD2DFactory, dc, size, skew, color1, color2);
 	HR(dc->CreateSolidColorBrush(D2D1::ColorF(0.79f, 0.5f, 0.8f, 0.3f), Brush.ReleaseAndGetAddressOf()));
 }
 
@@ -54,7 +54,8 @@ BOOL UIText::KeyDown(int value)
 	{
 		m_ActivateFunction();
 		m_pTimer->Reset(0);
-		m_pAlarm->SetTime(0);
+		m_pAlarm1->SetTime(0);
+		m_pAlarm2->SetTime(0);
 		return m_TimeString.Clear();
 	}
 	return FALSE;

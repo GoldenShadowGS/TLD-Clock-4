@@ -7,8 +7,10 @@
 struct SaveState
 {
 	INT64 maintime = 0;
-	INT64 alarmtime = 0;
-	INT64 alarmeditbox = 0;
+	INT64 alarmtime1 = 0;
+	INT64 alarmtime2 = 0;
+	INT64 alarmeditbox1 = 0;
+	INT64 alarmeditbox2 = 0;
 	INT64 addtime1 = 0;
 	INT64 addtime2 = 0;
 	INT64 addtime3 = 0;

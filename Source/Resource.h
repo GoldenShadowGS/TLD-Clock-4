@@ -6,8 +6,9 @@
 #define SOUND_STOP                      202
 #define SOUND_CLICK                     203
 #define SOUND_DRUGS                     204
-#define SOUND_ALARM                     205
-#define SOUND_END                       206
+#define SOUND_ALARM1                    205
+#define SOUND_ALARM2                    206
+#define SOUND_END                       207
 
 #define BITMAP_PARASITE                 301
 #define BITMAP_PARASITE_BW              302
