@@ -121,7 +121,7 @@ int Application::Run(HINSTANCE hInstance)
 	vectorUIElements.push_back(&LocalTime);
 
 
-	UIAlarmDisplay alarmDisplay(MakeRect(80, 50, 100, 50), factory, dc, &timer, [&] ()
+	UIAlarmDisplay alarmDisplay(MakeRect(80, 50, 100, 50), factory, dc, &timer, D2D1::ColorF(0.48f, 0.13f, 0.14f, 1.0f), D2D1::ColorF(0.86f, 0.21f, 0.27f, 1.0f), [&] ()
 		{
 			soundManager.Play(SOUND_ALARM, 1.0f, 1.0f);
 		});

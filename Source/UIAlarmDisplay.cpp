@@ -4,13 +4,12 @@
 #include "Math.h"
 #include "Resource.h"
 
-UIAlarmDisplay::UIAlarmDisplay(const RECT& buttonrect, ID2D1Factory2* factory, ID2D1DeviceContext* dc, Timer* timer, std::function <void()> sound) :
+UIAlarmDisplay::UIAlarmDisplay(const RECT& buttonrect, ID2D1Factory2* factory, ID2D1DeviceContext* dc, Timer* timer, const D2D1::ColorF& color1, const D2D1::ColorF& color2, std::function <void()> sound) :
 	UIElementBase(buttonrect, TRUE),
 	m_Timer(timer)
 {
 	m_PlaySound = sound;
-	m_Alarmtime.Init(factory, dc, 10.0f, -10.0f, D2D1::ColorF(0.48f, 0.13f, 0.14f, 1.0f), D2D1::ColorF(0.86f, 0.21f, 0.27f, 1.0f));
-	HR(dc->CreateSolidColorBrush(D2D1::ColorF(0.85f, 0.69f, 0.55f, 0.4f), Brush.ReleaseAndGetAddressOf()));
+	m_Alarmtime.Init(factory, dc, 10.0f, -10.0f, color1, color2);
 }
 
 void UIAlarmDisplay::Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused)

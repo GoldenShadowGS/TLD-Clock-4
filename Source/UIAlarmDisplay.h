@@ -10,7 +10,7 @@
 class UIAlarmDisplay : public UIElementBase
 {
 public:
-	UIAlarmDisplay(const RECT& buttonrect, ID2D1Factory2* factory, ID2D1DeviceContext* dc, Timer* timer, std::function <void()> sound);
+	UIAlarmDisplay(const RECT& buttonrect, ID2D1Factory2* factory, ID2D1DeviceContext* dc, Timer* timer, const D2D1::ColorF& color1, const D2D1::ColorF& color2, std::function <void()> sound);
 	void Draw(ID2D1DeviceContext* dc, ElementState state, BOOL focused) override;
 	INT64 GetRemainingtime();
 	void SetTime(INT64 time);
@@ -21,6 +21,5 @@ private:
 	BOOL AlarmBeeped = TRUE;
 	BOOL m_AlarmSet = FALSE;
 	std::function <void()> m_PlaySound;
-	ComPtr<ID2D1SolidColorBrush> Brush;
 	INT64 m_AlarmTime = 0;
 };
